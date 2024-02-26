@@ -19,7 +19,7 @@ def Conectar_BD(host, usuario, password, database):
 
 def MostrarMenu():
     menu = '''
-    1- Muestra el nombre de cada localidad junto con el numero total de empresas existentes en cada una, agrupadas por localidad.
+    1- Muestra el nombre de cada empresa junto con su respectiva localidad.
     2- Muestra cargos que empiecen por una subcadena especificada.
     3- Pide por teclado un nombre de empleado y muestre la descripcion del area de trabajo asociada a ese empleado 
     4- Pide por teclado los datos de una nueva empresa. Luego, inserta los datos en la tabla empresa y muestra una tabla actualizada con toda la informacion de la tabla empresa.
@@ -39,14 +39,17 @@ def MostrarMenu():
             print("Error, la opción debe de ser un número.\n")
 
 #Ejercicio1
-def mostrar_empresas(db):
+def mostrar_empresas_por_localidad(db):
     cursor = db.cursor()
     try:
-        sql = "SELECT DISTINCT Localidad, COUNT(*) as Total_Empresas FROM EMPRESA"
-        cursor.execute(sql)
-        registros = cursor.fetchall()
-        for localidad, total_empresas in registros:
-            print(f"{localidad}: {total_empresas}")
+        cursor.execute("SELECT Localidad, Nombre FROM EMPRESA ORDER BY Localidad, Nombre")
+        resultados = cursor.fetchall()
+        localidad_actual = None
+        for localidad, nombre_empresa in resultados:
+            if localidad != localidad_actual:
+                print(f"Empresa: {nombre_empresa}")
+                localidad_actual = localidad
+            print(f"Localidad: {localidad}")
     except Exception as e:
         print("Se ha producido un error al ejecutar la consulta:", e)
     finally:

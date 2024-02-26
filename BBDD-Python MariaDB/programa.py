@@ -7,7 +7,7 @@ while True:
 
     if opcion == 1:
         print("")
-        mostrar_empresas(db)
+        mostrar_empresas_por_localidad(db)
     elif opcion == 2:
         print("")
         subcadena = input("Introduce la subcadena para buscar los cargos: ")
